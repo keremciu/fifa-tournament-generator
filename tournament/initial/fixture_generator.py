@@ -23,10 +23,8 @@ class Generator(object):
     def createInitialFixtures(self):
         fixtures = []
 
-        currentWeek = 1
-        while currentWeek <= (self.team_count - 1):
+        for x in range(1, self.team_count):
             fixtures = fixtures + self.createFixturesForWeek(currentWeek)
-            currentWeek += 1
 
         return fixtures
 
