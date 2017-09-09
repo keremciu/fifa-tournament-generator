@@ -45,9 +45,9 @@ class Match(object):
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam
 
-# there could be type change like 'numberOfRounds'
+# there could be a season type change like 'numberOfRounds'
 def makefixture(request, pk):
-    # Load the season for the detail page
+    # Load the season to make fixture
     season = Season.objects.get(pk=pk)
     teams = season.getTeams().all()
     clubs = Club.objects.all()
@@ -86,3 +86,61 @@ def makefixture(request, pk):
         'fixture.html',
         {'season': season, 'fixtures': fixtures, 'teams': teams}
     )
+
+def scoreboard(request, pk):
+    season = Season.objects.get(pk=pk)
+    teams = season.getTeams().all()
+    fixtures = Fixture.objects.filter(season_id = season.id)
+
+    teamList = []
+
+    for team in teams:
+        teamSummary = {
+            "name": team.name,
+            "win": 0,
+            "drawn": 0,
+            "lost": 0,
+            "goals_for": 0,
+            "goals_against": 0,
+            "goal_difference": 0,
+            "points": 0
+        }
+
+        for fixture in fixtures:
+            if (fixture.is_played):
+                if (fixture.home_team_id.id == team.id):
+                    teamSummary['goals_for'] += fixture.home_score
+                    teamSummary['goals_against'] += fixture.away_score
+
+                    if (fixture.home_score > fixture.away_score):
+                        teamSummary['win'] += 1
+                        teamSummary['points'] += 3
+                    elif (fixture.home_score < fixture.away_score):
+                        teamSummary['lost'] += 1
+                    else:
+                        teamSummary['drawn'] += 1
+                        teamSummary['points'] += 1
+                if (fixture.away_team_id.id == team.id):
+                    teamSummary['goals_for'] += fixture.away_score
+                    teamSummary['goals_against'] += fixture.home_score
+
+                    if (fixture.away_score > fixture.home_score):
+                        teamSummary['win'] += 1
+                        teamSummary['points'] += 3
+                    elif (fixture.away_score < fixture.home_score):
+                        teamSummary['lost'] += 1
+                    else:
+                        teamSummary['drawn'] += 1
+                        teamSummary['points'] += 1
+            teamSummary['goal_difference'] = teamSummary['goals_for'] - teamSummary['goals_against']
+
+        teamList.append(teamSummary)
+        teamList.sort(key=lambda x: x['points'], reverse=True)
+
+    return render(
+        request,
+        'scoreboard.html',
+        {'season': season, 'teamList': teamList}
+    )
+
+

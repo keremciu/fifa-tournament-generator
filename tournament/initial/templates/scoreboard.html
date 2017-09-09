@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Page</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    </head>
+    <body>
+        <!-- List of Fixtures -->
+        <div class="container-fluid">
+          <div class="jumbotron" style="position: relative">
+            <img src="/media/marvin.png" style="position: absolute;top: 20px;right:50px;" />
+            <h3>{{ season.name }} <span class="badge badge-primary">Scoreboard</span> <small class="text-muted">welcome to play like a pro!</small></h3>
+          </div>
+          <table class="table table-responsive table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>Team</th>
+                <th>Won</th>
+                <th>Drawn</th>
+                <th>Lost</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for team in teamList %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ team.name }}</td>
+                <td>{{ team.win }}</td>
+                <td>{{ team.drawn }}</td>
+                <td>{{ team.lost }}</td>
+                <td>{{ team.goals_for }}</td>
+                <td>{{ team.goals_against }}</td>
+                <td>{{ team.goal_difference }}</td>
+                <td>{{ team.points }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </body>
+</html>

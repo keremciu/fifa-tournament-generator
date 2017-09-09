@@ -66,8 +66,8 @@ class Fixture(models.Model):
   home_team_club = models.ForeignKey(Club, blank=True, null=True, related_name='homeclub')
   away_team_id = models.ForeignKey(Team, related_name='awayteam')
   away_team_club = models.ForeignKey(Club, blank=True, null=True, related_name='awayclub')
-  home_score = models.IntegerField()
-  away_score = models.IntegerField()
+  home_score = models.IntegerField(default=0)
+  away_score = models.IntegerField(default=0)
   is_played = models.BooleanField(default=False)
   is_playoff_game = models.BooleanField(default=False)
   def __str__(self):
