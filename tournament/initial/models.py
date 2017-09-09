@@ -70,3 +70,6 @@ class Fixture(models.Model):
   away_score = models.IntegerField()
   is_played = models.BooleanField(default=False)
   is_playoff_game = models.BooleanField(default=False)
+  def __str__(self):
+        """Return a human readable representation of the model instance."""
+        return "{}".format(self.home_team_id)

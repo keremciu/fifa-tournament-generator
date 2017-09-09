@@ -66,21 +66,23 @@ def makefixture(request, pk):
             startWeek = match['week']
             clubList = clubs
 
-        homeTeam = choice(clubList)
-        clubList = clubList.exclude(pk=homeTeam.id)
-        awayTeam = choice(clubList)
-        clubList = clubList.exclude(pk=awayTeam.id)
+        homeClub = choice(clubList)
+        clubList = clubList.exclude(pk=homeClub.id)
+        awayClub = choice(clubList)
+        clubList = clubList.exclude(pk=awayClub.id)
 
-        fixture = {
-            "season_id": season.id,
-            "week": match['week'],
-            "home_team_id": teams[match['home'] - 1].id,
-            "home_team_club": homeTeam.name,
-            "away_team_id": teams[match['away'] - 1].id,
-            "away_team_club": awayTeam.name,
-        }
-        fixtures.append(fixture)
+        newFixture = Fixture(
+            season_id=season,
+            week=match['week'],
+            home_team_id=teams[match['home'] - 1],
+            home_team_club=homeClub,
+            away_team_id=teams[match['away'] - 1],
+            away_team_club=awayClub
+        )
+        fixtures.append(newFixture)
 
-    import json
-
-    return HttpResponse(json.dumps(fixtures))
+    return render(
+        request,
+        'fixture.html',
+        {'season': season, 'fixtures': fixtures, 'teams': teams}
+    )

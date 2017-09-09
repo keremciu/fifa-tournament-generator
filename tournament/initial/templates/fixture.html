@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Page</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    </head>
+    <body>
+        <!-- List of Fixtures -->
+        <div class="container-fluid">
+          <div class="jumbotron">
+            <h3>{{ season.name }} <small class="text-muted">welcome to play like a pro!</small></h3>
+          </div>
+          <table class="table table-responsive table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Hafta</th>
+                <th>Evsahibi Takim</th>
+                <th>Evsahibi Kulüp</th>
+                <th>Mac Skoru</th>
+                <th>Misafir Takim</th>
+                <th>Misafir Kulüp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for fixture in fixtures %}
+              <tr>
+                <td>{{ fixture.week }}</td>
+                <td>{{ fixture.home_team_id.name }}</td>
+                <td>{{ fixture.home_team_club.name }}</td>
+                <td>Oynanmadi</td>
+                <td>{{ fixture.away_team_id.name }}</td>
+                <td>{{ fixture.away_team_club.name }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </body>
+</html>

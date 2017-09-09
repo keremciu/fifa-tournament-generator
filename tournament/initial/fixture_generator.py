@@ -1,4 +1,3 @@
-
 class Generator(object):
     def __init__(self, team_count):
         self.hasGhostTeam = team_count % 2 > 0
