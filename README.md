@@ -19,4 +19,4 @@ install requirements
 
 To run the project, Follow the following commands:
 
-    $ python manage.py 0:8000
+    $ python manage.py runserver 0:8000
