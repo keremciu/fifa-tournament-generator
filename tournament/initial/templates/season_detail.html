@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Page</title>
+    </head>
+    <body>
+        <!-- Detail of season -->
+        <h2> {{ season.name }}</h2>
+        {% if fixtures %}
+            <h2>Fixtures</h2>
+            <ul>
+                {% for fixture in fixtures %}
+                    <li><a href="{{ fixture.id }}">{{ fixture.id }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No fixtures.</p>
+            <a href="/initial/seasons/makefixture/{{season.id}}">Make a fixture</a>
+        {% endif %}
+
+        <ul>
+        {% for team in teams %}
+            <li><a href="{{ team.id }}">{{ team.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>
