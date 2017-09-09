@@ -6,7 +6,7 @@
 
 Create Virtual Environment
 
-    $ virtualenv  env
+    $ virtualenv --python=$(which python3) env
     $ source env/bin/activate
 
 Clone the repository
@@ -18,5 +18,6 @@ install requirements
     $ pip install -r requirements.txt
 
 To run the project, Follow the following commands:
-
+    
+    $ python manage.py createsuperuser
     $ python manage.py runserver 0:8000
