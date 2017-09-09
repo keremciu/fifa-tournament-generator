@@ -1,111 +1,107 @@
 
 class Generator(object):
-  def __init__(self, team_count):
-    self.hasGhostTeam = team_count % 2 > 0
-    if team_count % 2 > 0:
-        team_count = team_count + 1
-    self.team_count = team_count
-    pass
+    def __init__(self, team_count):
+        self.hasGhostTeam = team_count % 2 > 0
+        self.team_count = team_count + 1 if team_count % 2 > 0 else team_count
 
-  def createFixtures(self):
-    initialFixtures = self.createInitialFixtures()
-    returnFixtures = self.createReturnFixtures(initialFixtures)
-    mergedFixtures = initialFixtures + returnFixtures
-    return mergedFixtures
+    def createFixtures(self):
+        initialFixtures = self.createInitialFixtures()
+        returnFixtures = self.createReturnFixtures(initialFixtures)
+        mergedFixtures = initialFixtures + returnFixtures
 
-  def createFixture(self, home, away, week):
-    fixture = {
-      "home": home,
-      "away": away,
-      "week": week
-    }
-    return fixture
+        return mergedFixtures
 
-  def createInitialFixtures(self):
-    fixtures = []
+    def createFixture(self, home, away, week):
+        fixture = {
+            "home": home,
+            "away": away,
+            "week": week
+        }
 
-    currentWeek = 1
-    while currentWeek <= (self.team_count - 1):
-      fixtures = fixtures + self.createFixturesForWeek(currentWeek)
-      currentWeek += 1
+        return fixture
 
-    return fixtures
+    def createInitialFixtures(self):
+        fixtures = []
 
-  def createFixturesForWeek(self, currentWeek):
-    fixtures = []
+        currentWeek = 1
+        while currentWeek <= (self.team_count - 1):
+            fixtures = fixtures + self.createFixturesForWeek(currentWeek)
+            currentWeek += 1
 
-    self.currentHome = self.team_count
-    self.currentAway = currentWeek
+        return fixtures
 
-    if (currentWeek % 2 != 0):
-      self.toggleHomeAndAwayTeam
+    def createFixturesForWeek(self, currentWeek):
+        fixtures = []
 
-    if (self.shallFixtureBeGenerated()):
-      fixtures.append(self.createFixture(self.currentHome, self.currentAway, currentWeek))
+        self.currentHome = self.team_count
+        self.currentAway = currentWeek
 
-    i = 1
-    while i <= (self.team_count / 2) - 1:
-      fixtures = fixtures + self.createFixturesForMatchIndex(currentWeek, i)
-      i += 1
+        if (currentWeek % 2 != 0):
+            self.toggleHomeAndAwayTeam
 
-    return fixtures
+        if (self.shallFixtureBeGenerated()):
+            fixtures.append(self.createFixture(self.currentHome, self.currentAway, currentWeek))
 
-  def createFixturesForMatchIndex(self, week, index):
-    fixtures = []
-    self.currentAway = self.findCurrentAwayTeam(self.team_count, week, index)
-    self.currentHome = self.findCurrentHomeTeam(self.team_count, week, index)
+        for x in range(1, (self.team_count / 2)):
+            fixtures = fixtures + self.createFixturesForMatchIndex(currentWeek, i)
 
-    if (index % 2 == 0):
-      self.toggleHomeAndAwayTeam
+        return fixtures
 
-    if (self.shallFixtureBeGenerated()):
-      fixtures.append(self.createFixture(self.currentHome, self.currentAway, week))
+    def createFixturesForMatchIndex(self, week, index):
+        fixtures = []
+        self.currentAway = self.findCurrentAwayTeam(self.team_count, week, index)
+        self.currentHome = self.findCurrentHomeTeam(self.team_count, week, index)
 
-    return fixtures
+        if (index % 2 == 0):
+            self.toggleHomeAndAwayTeam
 
-  def findCurrentHomeTeam(self, team_count, week, index):
-    return self.wrapTeam((week + index) % (team_count - 1))
+        if (self.shallFixtureBeGenerated()):
+            fixtures.append(self.createFixture(self.currentHome, self.currentAway, week))
 
-  def findCurrentAwayTeam(self, team_count, week, index):
-    if (week - index < 0):
-      team = team_count - 1 + week - index
-    else:
-      team = self.wrapTeam((week - index) % (team_count - 1))
+        return fixtures
 
-    return team
+    def findCurrentHomeTeam(self, team_count, week, index):
+        return self.wrapTeam((week + index) % (team_count - 1))
 
-  def wrapTeam(self, team):
-    if (team == 0):
-      team = self.team_count - 1
+    def findCurrentAwayTeam(self, team_count, week, index):
+        if (week - index < 0):
+            team = team_count - 1 + week - index
+        else:
+            team = self.wrapTeam((week - index) % (team_count - 1))
 
-    return team
+        return team
 
-  def toggleHomeAndAwayTeam(self):
-    self.currentHome, self.currentAway = self.currentAway, self.currentHome
+    def wrapTeam(self, team):
+        if (team == 0):
+            team = self.team_count - 1
 
+        return team
 
-  def isLastTeamCurrent(self):
-    return self.team_count == self.currentHome or self.team_count == self.currentAway
+    def toggleHomeAndAwayTeam(self):
+        self.currentHome, self.currentAway = self.currentAway, self.currentHome
 
-  def shallFixtureBeGenerated(self):
-    return not self.hasGhostTeam or not self.isLastTeamCurrent()
+    def isLastTeamCurrent(self):
+        return self.team_count == self.currentHome or self.team_count == self.currentAway
 
-  def createReturnFixtures(self, initialFixtures):
-    fixtures = []
-    for homeFixture in initialFixtures:
-      if (self.hasGhostTeam or (self.team_count != homeFixture['away'] and self.team_count != homeFixture['home'])):
-        fixtures.append(self.createFixture(homeFixture['away'], homeFixture['home'], homeFixture['week'] + self.team_count - 1))
+    def shallFixtureBeGenerated(self):
+        return not self.hasGhostTeam or not self.isLastTeamCurrent()
 
-    return fixtures
+    def createReturnFixtures(self, initialFixtures):
+        fixtures = []
+        for homeFixture in initialFixtures:
+            if (self.hasGhostTeam or (self.team_count != homeFixture['away'] and self.team_count != homeFixture['home'])):
+                fixtures.append(self.createFixture(homeFixture['away'], homeFixture['home'], homeFixture['week'] + self.team_count - 1))
 
-  def getCurrentHomeTeam(self):
-    return self.currentHome
+        return fixtures
 
-  def setCurrentHomeTeam(self, newCurrentHome):
-    self.currentHome = newCurrentHome
+    def getCurrentHomeTeam(self):
+        return self.currentHome
 
-  def getCurrentAwayTeam(self):
-    return self.currentAway
+    def setCurrentHomeTeam(self, newCurrentHome):
+        self.currentHome = newCurrentHome
 
-  def setCurrentAwayTeam(self, newCurrentAway):
-    self.currentAway = newCurrentAway
+    def getCurrentAwayTeam(self):
+        return self.currentAway
+
+    def setCurrentAwayTeam(self, newCurrentAway):
+        self.currentAway = newCurrentAway
