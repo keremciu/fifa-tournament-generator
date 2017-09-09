@@ -66,4 +66,6 @@ def makefixture(request, pk):
         }
         fixtures.append(fixture)
 
-    return HttpResponse(fixtures)
+    import json
+
+    return HttpResponse(json.dumps(fixtures))
