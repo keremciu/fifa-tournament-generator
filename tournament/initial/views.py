@@ -137,7 +137,7 @@ def scoreboard(request, pk):
             teamSummary['goal_difference'] = teamSummary['goals_for'] - teamSummary['goals_against']
 
         teamList.append(teamSummary)
-        teamList.sort(key=lambda x: x['points'], reverse=True)
+        teamList.sort(key=lambda x: (x['points'], x['goal_difference']), reverse=True)
 
     return render(
         request,
