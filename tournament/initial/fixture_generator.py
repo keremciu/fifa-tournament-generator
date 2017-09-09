@@ -1,9 +1,9 @@
 
-class Generator:
+class Generator(object):
   def __init__(self, team_count):
     self.hasGhostTeam = team_count % 2 > 0
-    if (team_count % 2 > 0):
-      team_count = team_count + 1
+    if team_count % 2 > 0:
+        team_count = team_count + 1
     self.team_count = team_count
     pass
 
@@ -81,9 +81,8 @@ class Generator:
     return team
 
   def toggleHomeAndAwayTeam(self):
-    temp = self.currentAway
-    self.currentAway = self.currentHome
-    self.currentHome = temp
+    self.currentHome, self.currentAway = self.currentAway, self.currentHome
+
 
   def isLastTeamCurrent(self):
     return self.team_count == self.currentHome or self.team_count == self.currentAway

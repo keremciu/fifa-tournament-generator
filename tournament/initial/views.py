@@ -8,7 +8,7 @@ from django.forms.models import model_to_dict
 
 from random import choice, shuffle, sample
 
-from .fixtureGenerator import Generator
+from .fixture_generator import Generator
 
 def index(request):
     return HttpResponse("Hello, world. You're at the initial index.")
