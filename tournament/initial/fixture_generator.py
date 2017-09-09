@@ -40,7 +40,7 @@ class Generator(object):
         if (self.shallFixtureBeGenerated()):
             fixtures.append(self.createFixture(self.currentHome, self.currentAway, currentWeek))
 
-        for week_ind in range(1, (self.team_count / 2)):
+        for week_ind in range(1, (self.team_count // 2)):
             fixtures = fixtures + self.createFixturesForMatchIndex(currentWeek, week_ind)
 
         return fixtures
@@ -87,7 +87,7 @@ class Generator(object):
     def createReturnFixtures(self, initialFixtures):
         fixtures = []
         for homeFixture in initialFixtures:
-            if (self.hasGhostTeam or (self.team_count != homeFixture['away'] and self.team_count != homeFixture['home'])):
+            if (not self.hasGhostTeam or (self.team_count != homeFixture['away'] and self.team_count != homeFixture['home'])):
                 fixtures.append(self.createFixture(homeFixture['away'], homeFixture['home'], homeFixture['week'] + self.team_count - 1))
 
         return fixtures
