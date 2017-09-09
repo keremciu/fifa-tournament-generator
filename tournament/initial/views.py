@@ -97,6 +97,7 @@ def scoreboard(request, pk):
     for team in teams:
         teamSummary = {
             "name": team.name,
+            "games_played": 0,
             "win": 0,
             "drawn": 0,
             "lost": 0,
@@ -132,6 +133,7 @@ def scoreboard(request, pk):
                     else:
                         teamSummary['drawn'] += 1
                         teamSummary['points'] += 1
+            teamSummary['games_played'] = teamSummary['win'] + teamSummary['drawn'] + teamSummary['lost']
             teamSummary['goal_difference'] = teamSummary['goals_for'] - teamSummary['goals_against']
 
         teamList.append(teamSummary)
