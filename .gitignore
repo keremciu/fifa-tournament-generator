@@ -6,3 +6,4 @@ __pycache__
 architecture.md
 match.md
 db.sqlite3
+tournament/media

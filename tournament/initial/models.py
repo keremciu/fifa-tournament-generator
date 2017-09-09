@@ -12,11 +12,11 @@ class Team(models.Model):
 
   def __str__(self):
         """Return a human readable representation of the model instance."""
-        return "{}".format(self.id)
+        return "{}".format(self.name)
 
 class Club(models.Model):
   name = models.CharField(max_length=255, blank=False, unique=True)
-  logo = models.ImageField(upload_to = 'pic_folder/', default = 'pic_folder/None/no-img.jpg')
+  logo = models.FileField(upload_to = 'pic_folder/', default = 'pic_folder/None/no-img.jpg')
   owner = models.ForeignKey(Team, blank=True, null=True)
   is_active = models.BooleanField(default=True)
   date_created = models.DateTimeField(auto_now_add=True)
