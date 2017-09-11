@@ -1,1 +1,1 @@
-web: gunicorn tournament.tournament.wsgi
+web: env PYTHONPATH=$PYTHONPATH:$PWD/tournament gunicorn tournament.wsgi
