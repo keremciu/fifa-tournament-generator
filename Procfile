@@ -1,1 +1,1 @@
-web: gunicorn tournament.wsgi
+web: gunicorn tournament.tournament.wsgi
