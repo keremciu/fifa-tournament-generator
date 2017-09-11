@@ -17,3 +17,5 @@ simplegeneric==0.8.1
 six==1.10.0
 traitlets==4.3.2
 wcwidth==0.1.7
+gunicorn==19.7.1
+whitenoise==3.3.0

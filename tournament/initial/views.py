@@ -33,7 +33,7 @@ def detail(request, pk):
     # Render list page with the documents and the form
     return render(
         request,
-        'season_detail.html',
+        'fixture.html',
         {'season': season, 'fixtures': fixtures, 'teams': teams}
     )
 
