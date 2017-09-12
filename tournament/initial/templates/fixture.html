@@ -31,6 +31,11 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td colspan="6" class="text-center">
+                  <h6>1. Week Matches</h6>
+                </td>
+              </tr>
               {% for fixture in fixtures %}
               <tr>
                 <td>{{ fixture.week }}</td>
@@ -43,7 +48,7 @@
                     alt="{{fixture.home_team_club.name}}"
                   />
                 </td>
-                <td style="text-align: center">
+                <td class="text-center">
                   <h5>
                     {% if fixture.is_played %}
                       <span class="badge badge-success">{{ fixture.home_score }} - {{ fixture.away_score }}</span>
@@ -63,6 +68,13 @@
                 </td>
                 <td>{{ fixture.away_team_id.name }}</td>
               </tr>
+              {% if forloop.counter|divisibleby:4 %}
+              <tr>
+                <td colspan="6" class="text-center">
+                  <h6>{{ fixture.week|add:1 }}. Week Matches</h6>
+                </td>
+              </tr>
+              {% endif %}
               {% endfor %}
             </tbody>
           </table>
