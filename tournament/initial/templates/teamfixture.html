@@ -35,8 +35,10 @@
               {% for fixture in fixtures %}
               <tr>
                 <td>Week #{{ fixture.week }}</td>
-                <td><a href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a></td>
-                <td>{{ fixture.home_team_club.name }}
+                <td {% if fixture.home_team_id.id == teamid %}class="bg-dark"{% endif %}>
+                    <a {% if fixture.home_team_id.id == teamid %}class="text-light"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a>
+                </td>
+                <td {% if fixture.home_team_id.id == teamid %}class="bg-dark text-light"{% endif %}>{{ fixture.home_team_club.name }}
                   <img
                     class="float-right"
                     height="30"
@@ -53,7 +55,7 @@
                     {% endif %}
                   </h5>
                 </td>
-                <td>{{ fixture.away_team_club.name }}
+                <td {% if fixture.away_team_id.id == teamid %}class="bg-dark text-light"{% endif %}>{{ fixture.away_team_club.name }}
                   <img
                     class="float-left"
                     style="margin-right: 15px;"
@@ -62,7 +64,9 @@
                     alt="{{fixture.away_team_club.name}}"
                   />
                 </td>
-                <td><a href="/{{ season.id}}/teamfixture/{{fixture.away_team_id.id}}">{{ fixture.away_team_id.name }}</a></td>
+                <td {% if fixture.away_team_id.id == teamid %}class="bg-dark"{% endif %}>
+                  <a {% if fixture.away_team_id.id == teamid %}class="text-light"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.away_team_id.id}}">{{ fixture.away_team_id.name }}</a>
+                </td>
               </tr>
               {% endfor %}
             </tbody>
