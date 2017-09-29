@@ -41,6 +41,32 @@ class Season(models.Model):
   def getTeams(self):
         return self.teams.all()
 
+  @property
+  def fixture_details(self):
+    fixtures = Fixture.objects.filter(season_id = self.id)
+    fixturesCount = fixtures.count()
+    playedFixtures = fixtures.filter(is_played = True)
+    playedFixturesCount = playedFixtures.count()
+    playedFixturesPercentage = playedFixturesCount / fixturesCount * 100
+
+    return {
+      'matchs_count': fixturesCount,
+      'played_count': playedFixturesCount,
+      'percentage': playedFixturesPercentage,
+    }
+
+  @property
+  def fixture_percentage(self):
+    return '%.2f' % self.fixture_details['percentage']
+
+  @property
+  def matchs_count(self):
+    return self.fixture_details['matchs_count']
+
+  @property
+  def played_count(self):
+    return self.fixture_details['played_count']
+
 # TODO: not need this one
 class Score(models.Model):
   season_id = models.ForeignKey(Season)
