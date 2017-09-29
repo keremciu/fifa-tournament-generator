@@ -5,17 +5,17 @@ register = template.Library()
 @register.simple_tag
 def get_result_class(teamid, fixture):
   teamid = int(teamid)
-  result = 'badge-info'
+  result = 'info'
   if (fixture.home_team_id.id == teamid):
     if (fixture.home_score > fixture.away_score):
-      result = 'badge-success'
+      result = 'success'
     elif (fixture.home_score < fixture.away_score):
-      result = 'badge-danger'
+      result = 'danger'
   if (fixture.away_team_id.id == teamid):
     if (fixture.away_score > fixture.home_score):
-      result = 'badge-success'
+      result = 'success'
     elif (fixture.away_score < fixture.home_score):
-      result = 'badge-danger'
+      result = 'danger'
 
   return result
 

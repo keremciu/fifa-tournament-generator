@@ -36,9 +36,13 @@
               <tr>
                 <td>Week #{{ fixture.week }}</td>
                 {% if fixture.home_team_id.id == teamid|to_int %}
-                <td class="table-inverse">
-                  {{ fixture.home_team_id.name }}
-                </td>
+                  {% if fixture.is_played %}
+                  <td class="table-{% get_result_class teamid fixture %}">
+                  {% else %}
+                  <td class="table-secondary">
+                  {% endif %}
+                    {{ fixture.home_team_id.name }}
+                  </td>
                 {% else %}
                 <td>
                   <a {% if fixture.home_team_id.id == teamid|to_int %}class="text-white"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a>
@@ -55,7 +59,7 @@
                 <td class="text-center">
                   <h5>
                     {% if fixture.is_played %}
-                      <span class="badge {% get_result_class teamid fixture %}">{{ fixture.home_score }} - {{ fixture.away_score }}</span>
+                      <span class="badge badge-{% get_result_class teamid fixture %}">{{ fixture.home_score }} - {{ fixture.away_score }}</span>
                     {% else %}
                       <span class="badge badge-secondary">not played</span>
                     {% endif %}
@@ -71,9 +75,13 @@
                   />
                 </td>
                 {% if fixture.away_team_id.id == teamid|to_int %}
-                <td class="table-inverse">
-                  {{ fixture.away_team_id.name }}
-                </td>
+                  {% if fixture.is_played %}
+                  <td class="table-{% get_result_class teamid fixture %}">
+                  {% else %}
+                  <td class="table-secondary">
+                  {% endif %}
+                    {{ fixture.away_team_id.name }}
+                  </td>
                 {% else %}
                 <td>
                   <a {% if fixture.away_team_id.id == teamid|to_int %}class="text-white"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.away_team_id.id}}">{{ fixture.away_team_id.name }}</a>
