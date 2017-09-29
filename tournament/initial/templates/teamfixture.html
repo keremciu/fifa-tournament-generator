@@ -35,9 +35,15 @@
               {% for fixture in fixtures %}
               <tr>
                 <td>Week #{{ fixture.week }}</td>
-                <td {% if fixture.home_team_id.id == teamid|to_int %}class="table-inverse"{% endif %}>
-                    <a {% if fixture.home_team_id.id == teamid|to_int %}class="text-white"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a>
+                {% if fixture.home_team_id.id == teamid|to_int %}
+                <td class="table-inverse">
+                  {{ fixture.home_team_id.name }}
                 </td>
+                {% else %}
+                <td>
+                  <a {% if fixture.home_team_id.id == teamid|to_int %}class="text-white"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a>
+                </td>
+                {% endif %}
                 <td>{{ fixture.home_team_club.name }}
                   <img
                     class="float-right"
@@ -64,9 +70,15 @@
                     alt="{{fixture.away_team_club.name}}"
                   />
                 </td>
-                <td {% if fixture.away_team_id.id == teamid|to_int %}class="table-inverse"{% endif %}>
+                {% if fixture.away_team_id.id == teamid|to_int %}
+                <td class="table-inverse">
+                  {{ fixture.away_team_id.name }}
+                </td>
+                {% else %}
+                <td>
                   <a {% if fixture.away_team_id.id == teamid|to_int %}class="text-white"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.away_team_id.id}}">{{ fixture.away_team_id.name }}</a>
                 </td>
+                {% endif %}
               </tr>
               {% endfor %}
             </tbody>
