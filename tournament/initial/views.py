@@ -111,6 +111,7 @@ def scoreboard(request, pk):
 
     for team in teams:
         teamSummary = {
+            "id": team.id,
             "name": team.name,
             "games_played": 0,
             "win": 0,
