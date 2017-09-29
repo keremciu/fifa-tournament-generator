@@ -49,7 +49,7 @@ def teamfixture(request, pk, team):
     return render(
         request,
         'teamfixture.html',
-        {'season': season, 'fixtures': team_fixtures, 'teams': teams}
+        {'season': season, 'fixtures': team_fixtures, 'teams': teams, 'teamid': team}
     )
 
 class Match(object):
