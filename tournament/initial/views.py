@@ -48,7 +48,7 @@ def teamfixture(request, pk, team):
     # Render list page with the documents and the form
     return render(
         request,
-        'fixture.html',
+        'teamfixture.html',
         {'season': season, 'fixtures': team_fixtures, 'teams': teams}
     )
 
