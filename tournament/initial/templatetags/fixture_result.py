@@ -18,3 +18,7 @@ def get_result_class(teamid, fixture):
       result = 'badge-danger'
 
   return result
+
+@register.filter()
+def to_int(value):
+    return int(value)
