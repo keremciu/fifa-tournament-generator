@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 
 from .models import Season,Fixture,Club
+from django.db.models import Q
 from django.forms.models import model_to_dict
 
 from random import choice
@@ -35,6 +36,20 @@ def detail(request, pk):
         request,
         'fixture.html',
         {'season': season, 'fixtures': fixtures, 'teams': teams}
+    )
+
+def teamfixture(request, pk, team):
+    # Load the season for the detail page
+    season = Season.objects.get(pk=pk)
+    teams = season.getTeams().all()
+    fixtures = Fixture.objects.filter(season_id = season.id)
+    team_fixtures = fixtures.filter(Q(home_team_id=team) | Q(away_team_id=team))
+
+    # Render list page with the documents and the form
+    return render(
+        request,
+        'fixture.html',
+        {'season': season, 'fixtures': team_fixtures, 'teams': teams}
     )
 
 class Match(object):

@@ -39,7 +39,7 @@
               {% for fixture in fixtures %}
               <tr>
                 <td>{{ fixture.week }}</td>
-                <td>{{ fixture.home_team_id.name }}</td>
+                <td><a href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a></td>
                 <td>{{ fixture.home_team_club.name }}
                   <img
                     class="float-right"
@@ -66,7 +66,7 @@
                     alt="{{fixture.away_team_club.name}}"
                   />
                 </td>
-                <td>{{ fixture.away_team_id.name }}</td>
+                <td><a href="/{{ season.id}}/teamfixture/{{fixture.away_team_id.id}}">{{ fixture.away_team_id.name }}</a></td>
               </tr>
               {% if forloop.counter|divisibleby:4 %}
               <tr>
