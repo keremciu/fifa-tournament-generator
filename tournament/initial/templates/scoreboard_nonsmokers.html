@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Scoreboard - {{ season.name }} - FIFA TOURNAMENT</title>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="shrink-to-fit=yes">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    </head>
+    <body>
+      <div style="width: 70%; float: left">
+        <!-- List of Fixtures -->
+        <div class="container-fluid">
+          <div class="jumbotron" style="position: relative">
+            <img
+              src="/media/marvin.png"
+              style="position: absolute;top: 50px;right:240px;width: 120px;"
+            />
+            <h3>{{ season.name }} <span class="badge badge-primary">Scoreboard</span> <small class="text-muted">welcome to play like a pro!</small>
+              <a href="/{{ season.id}}/" class="btn btn-lg btn-link float-right">Fixture →</a>
+            </h3>
+          </div>
+          <div class="card mb-4 p-4">
+            <div class="card-block">
+              <h6>{{ season.played_count }} matches are played of {{ season.matchs_count }} matches.</h6>
+              <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ season.fixture_percentage }}%" aria-valuenow="{{ season.fixture_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>Team</th>
+                <th>Played</th>
+                <th>Won</th>
+                <th>Drawn</th>
+                <th>Lost</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for team in teamList %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="/{{season.id}}/teamfixture/{{ team.id }}">{{ team.name }}</a></td>
+                <td>{{ team.games_played }}</td>
+                <td>{{ team.win }}</td>
+                <td>{{ team.drawn }}</td>
+                <td>{{ team.lost }}</td>
+                <td>{{ team.goals_for }}</td>
+                <td>{{ team.goals_against }}</td>
+                <td>{{ team.goal_difference }}</td>
+                <td>{{ team.points }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="width:30%;float:left;">
+        <iframe height="100%" style="height: 100%;border:0px;" src="http://nonsmokers-championship.herokuapp.com"></iframe>
+      </div>
+    </body>
+</html>
