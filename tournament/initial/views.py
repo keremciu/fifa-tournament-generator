@@ -65,13 +65,14 @@ def makefixture(request, pk):
     # Load the season to make fixture
     season = Season.objects.get(pk=pk)
     teams = season.getTeams().all()
-    clubs = Club.objects.all()
+    clubs = season.getClubs().all()
     team_count = teams.count()
 
     generator = Generator(team_count)
     matches = generator.createFixtures()
 
     fixtures = []
+    team_club_assignment = {}
 
     startWeek = 1
     clubList = clubs
@@ -81,25 +82,43 @@ def makefixture(request, pk):
             startWeek = match['week']
             clubList = clubs
 
-        homeClub = choice(clubList)
-        clubList = clubList.exclude(pk=homeClub.id)
-        awayClub = choice(clubList)
-        clubList = clubList.exclude(pk=awayClub.id)
+        homeTeamID = teams[match['home'] - 1]
+        awayTeamID = teams[match['away'] - 1]
+
+        if homeTeamID not in team_club_assignment:
+            team_club_assignment[homeTeamID] = []
+        if awayTeamID not in team_club_assignment:
+            team_club_assignment[awayTeamID] = []
+
+        homeClubList = clubList.exclude(pk__in=team_club_assignment[homeTeamID])
+        awayClubList = clubList.exclude(pk__in=team_club_assignment[awayTeamID])
+
+        homeClub = choice(homeClubList)
+        team_club_assignment[homeTeamID].append(homeClub.id)
+        # clubList = clubList.exclude(pk=homeClub.id)
+        # print(awayTeamID)
+        # print(team_club_assignment[awayTeamID])
+        # print(awayClubList)
+        awayClub = choice(awayClubList)
+        team_club_assignment[awayTeamID].append(awayClub.id)
+        # clubList = clubList.exclude(pk=awayClub.id)
 
         newFixture = Fixture(
             season_id=season,
             week=match['week'],
-            home_team_id=teams[match['home'] - 1],
+            home_team_id=homeTeamID,
             home_team_club=homeClub,
-            away_team_id=teams[match['away'] - 1],
+            away_team_id=awayTeamID,
             away_team_club=awayClub
         )
         fixtures.append(newFixture)
 
+    matchPerWeek = (len(fixtures) / 2) / len(teams)
+
     return render(
         request,
         'fixture.html',
-        {'season': season, 'fixtures': fixtures, 'teams': teams}
+        {'season': season, 'fixtures': fixtures, 'teams': teams, 'matchPerWeek': matchPerWeek}
     )
 
 def scoreboard(request, pk):

@@ -29,6 +29,7 @@ class Club(models.Model):
 class Season(models.Model):
   name = models.CharField(max_length=255, blank=False, unique=True)
   teams = models.ManyToManyField(Team, related_name='teamList')
+  clubs = models.ManyToManyField(Club, related_name='clubList')
   prize = models.CharField(max_length=255, blank=False, unique=True)
   is_active = models.BooleanField(default=True)
   date_created = models.DateTimeField(auto_now_add=True)
@@ -40,6 +41,9 @@ class Season(models.Model):
 
   def getTeams(self):
         return self.teams.all()
+  
+  def getClubs(self):
+        return self.clubs.all()
 
   @property
   def fixture_details(self):
@@ -47,7 +51,9 @@ class Season(models.Model):
     fixturesCount = fixtures.count()
     playedFixtures = fixtures.filter(is_played = True)
     playedFixturesCount = playedFixtures.count()
-    playedFixturesPercentage = playedFixturesCount / fixturesCount * 100
+    playedFixturesPercentage = 0
+    if fixturesCount != 0:
+      playedFixturesPercentage = playedFixturesCount / fixturesCount * 100
 
     return {
       'matchs_count': fixturesCount,

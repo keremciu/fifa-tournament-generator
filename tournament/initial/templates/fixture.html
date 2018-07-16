@@ -76,7 +76,7 @@
                 </td>
                 <td><a href="/{{ season.id}}/teamfixture/{{fixture.away_team_id.id}}">{{ fixture.away_team_id.name }}</a></td>
               </tr>
-              {% if forloop.counter|divisibleby:3 %}
+              {% if forloop.counter|divisibleby:matchPerWeek and not forloop.last %}
               <tr>
                 <td colspan="6" class="text-center">
                   <h6>{{ fixture.week|add:1 }}. Week Matches</h6>
