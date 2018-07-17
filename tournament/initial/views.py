@@ -91,21 +91,20 @@ def makefixture(request, pk):
         if awayTeamID not in team_club_assignment:
             team_club_assignment[awayTeamID] = []
 
-        homeClubList = clubList.exclude(pk__in=team_club_assignment[homeTeamID])
-        awayClubList = clubList.exclude(pk__in=team_club_assignment[awayTeamID])
-
         if (match['is_revenge']):
             inheritRevenge = fixtures[index - (len(matches) / 2)]
             homeClub = inheritRevenge.home_team_club
             awayClub = inheritRevenge.away_team_club
         else:
+            homeClubList = clubList.exclude(pk__in=team_club_assignment[homeTeamID])
             homeClub = choice(homeClubList)
+            clubList = clubList.exclude(pk=homeClub.id)
             team_club_assignment[homeTeamID].append(homeClub.id)
+            awayClubList = clubList.exclude(pk__in=team_club_assignment[awayTeamID])
             awayClub = choice(awayClubList)
+            clubList = clubList.exclude(pk=awayClub.id)
             team_club_assignment[awayTeamID].append(awayClub.id)
         # if len(homeClubList) > 0:
-        clubList = clubList.exclude(pk=homeClub.id)
-        clubList = clubList.exclude(pk=awayClub.id)
         # print(awayTeamID)
         # print(team_club_assignment[awayTeamID])
         # print(awayClubList)
