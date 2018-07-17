@@ -30,12 +30,13 @@ def detail(request, pk):
     season = Season.objects.get(pk=pk)
     teams = season.getTeams().all()
     fixtures = Fixture.objects.filter(season_id = season.id)
+    matchPerWeek = (len(fixtures) / 2) / len(teams)
 
     # Render list page with the documents and the form
     return render(
         request,
         'fixture.html',
-        {'season': season, 'fixtures': fixtures, 'teams': teams}
+        {'season': season, 'fixtures': fixtures, 'teams': teams, 'matchPerWeek': matchPerWeek}
     )
 
 def teamfixture(request, pk, team):
@@ -77,7 +78,7 @@ def makefixture(request, pk):
     startWeek = 1
     clubList = clubs
 
-    for match in matches:
+    for index, match in enumerate(matches):
         if match['week'] != startWeek:
             startWeek = match['week']
             clubList = clubs
@@ -93,15 +94,22 @@ def makefixture(request, pk):
         homeClubList = clubList.exclude(pk__in=team_club_assignment[homeTeamID])
         awayClubList = clubList.exclude(pk__in=team_club_assignment[awayTeamID])
 
-        homeClub = choice(homeClubList)
-        team_club_assignment[homeTeamID].append(homeClub.id)
-        # clubList = clubList.exclude(pk=homeClub.id)
+        if (match['is_revenge']):
+            inheritRevenge = fixtures[index - (len(matches) / 2)]
+            homeClub = inheritRevenge.home_team_club
+            awayClub = inheritRevenge.away_team_club
+        else:
+            homeClub = choice(homeClubList)
+            team_club_assignment[homeTeamID].append(homeClub.id)
+            awayClub = choice(awayClubList)
+            team_club_assignment[awayTeamID].append(awayClub.id)
+        # if len(homeClubList) > 0:
+        clubList = clubList.exclude(pk=homeClub.id)
+        clubList = clubList.exclude(pk=awayClub.id)
         # print(awayTeamID)
         # print(team_club_assignment[awayTeamID])
         # print(awayClubList)
-        awayClub = choice(awayClubList)
-        team_club_assignment[awayTeamID].append(awayClub.id)
-        # clubList = clubList.exclude(pk=awayClub.id)
+        # if len(awayClubList) > 0:
 
         newFixture = Fixture(
             season_id=season,

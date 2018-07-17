@@ -104,4 +104,9 @@ class Fixture(models.Model):
   is_playoff_game = models.BooleanField(default=False)
   def __str__(self):
         """Return a human readable representation of the model instance."""
-        return "{}".format(self.week)
+        return "{season} ->> week {week}. {homeTeam} VS {awayTeam}".format(
+          season=self.season_id,
+          week=self.week,
+          homeTeam=self.home_team_id,
+          awayTeam=self.away_team_id,
+        )

@@ -10,11 +10,12 @@ class Generator(object):
 
         return mergedFixtures
 
-    def createFixture(self, home, away, week):
+    def createFixture(self, home, away, week, revenge=False):
         fixture = {
             "home": home,
             "away": away,
-            "week": week
+            "week": week,
+            "is_revenge": revenge
         }
 
         return fixture
@@ -87,7 +88,7 @@ class Generator(object):
         fixtures = []
         for homeFixture in initialFixtures:
             if (not self.hasGhostTeam or (self.team_count != homeFixture['away'] and self.team_count != homeFixture['home'])):
-                fixtures.append(self.createFixture(homeFixture['away'], homeFixture['home'], homeFixture['week'] + self.team_count - 1))
+                fixtures.append(self.createFixture(homeFixture['away'], homeFixture['home'], homeFixture['week'] + self.team_count - 1, True))
 
         return fixtures
 
