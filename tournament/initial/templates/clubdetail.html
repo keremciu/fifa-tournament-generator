@@ -1,3 +1,4 @@
+{% load fixture_result %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,14 +20,6 @@
               <a href="/{{ season.id}}/scoreboard/" class="btn btn-lg btn-link float-right">Scoreboard →</a>
             </h3>
           </div>
-          <div class="card mb-4 p-4">
-            <div class="card-block">
-              <h6>{{ season.played_count }} matches are played of {{ season.matchs_count }} matches.</h6>
-              <div class="progress">
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{ season.fixture_percentage }}%" aria-valuenow="{{ season.fixture_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
           <table class="table table-responsive table-striped table-bordered table-hover">
             <thead>
               <tr>
@@ -39,15 +32,22 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td colspan="6" class="text-center">
-                  <h6>1. Week Matches</h6>
-                </td>
-              </tr>
               {% for fixture in fixtures %}
               <tr>
-                <td>{{ fixture.week }}</td>
-                <td><a href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a></td>
+                <td>Week #{{ fixture.week }}</td>
+                {% if fixture.home_team_club.id == clubid|to_int %}
+                  {% if fixture.is_played %}
+                  <td class="table-{% get_result_class_for_club clubid fixture %}">
+                  {% else %}
+                  <td class="table-secondary">
+                  {% endif %}
+                    {{ fixture.home_team_id.name }}
+                  </td>
+                {% else %}
+                <td>
+                  <a {% if fixture.home_team_club.id == clubid|to_int %}class="text-white"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a>
+                </td>
+                {% endif %}
                 <td>
                   <a href="/{{ season.id}}/clubdetail/{{fixture.home_team_club.id}}">{{ fixture.home_team_club.name }}</a>
                   <img
@@ -60,7 +60,7 @@
                 <td class="text-center">
                   <h5>
                     {% if fixture.is_played %}
-                      <span class="badge badge-dark">{{ fixture.home_score }} - {{ fixture.away_score }}</span>
+                      <span class="badge badge-{% get_result_class_for_club clubid fixture %}">{{ fixture.home_score }} - {{ fixture.away_score }}</span>
                     {% else %}
                       <span class="badge badge-secondary">not played</span>
                     {% endif %}
@@ -76,15 +76,20 @@
                     alt="{{fixture.away_team_club.name}}"
                   />
                 </td>
-                <td><a href="/{{ season.id}}/teamfixture/{{fixture.away_team_id.id}}">{{ fixture.away_team_id.name }}</a></td>
-              </tr>
-              {% if forloop.counter|divisibleby:matchPerWeek and not forloop.last %}
-              <tr>
-                <td colspan="6" class="text-center">
-                  <h6>{{ fixture.week|add:1 }}. Week Matches</h6>
+                {% if fixture.away_team_club.id == clubid|to_int %}
+                  {% if fixture.is_played %}
+                  <td class="table-{% get_result_class_for_club clubid fixture %}">
+                  {% else %}
+                  <td class="table-secondary">
+                  {% endif %}
+                    {{ fixture.away_team_id.name }}
+                  </td>
+                {% else %}
+                <td>
+                  <a {% if fixture.away_team_club.id == clubid|to_int %}class="text-white"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.away_team_id.id}}">{{ fixture.away_team_id.name }}</a>
                 </td>
+                {% endif %}
               </tr>
-              {% endif %}
               {% endfor %}
             </tbody>
           </table>

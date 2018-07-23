@@ -48,7 +48,8 @@
                   <a {% if fixture.home_team_id.id == teamid|to_int %}class="text-white"{% endif %} href="/{{ season.id}}/teamfixture/{{fixture.home_team_id.id}}">{{ fixture.home_team_id.name }}</a>
                 </td>
                 {% endif %}
-                <td>{{ fixture.home_team_club.name }}
+                <td>
+                  <a href="/{{ season.id}}/clubdetail/{{fixture.home_team_club.id}}">{{ fixture.home_team_club.name }}</a>
                   <img
                     class="float-right"
                     height="30"
@@ -65,7 +66,8 @@
                     {% endif %}
                   </h5>
                 </td>
-                <td>{{ fixture.away_team_club.name }}
+                <td>
+                  <a href="/{{ season.id}}/clubdetail/{{fixture.away_team_club.id}}">{{ fixture.away_team_club.name }}</a>
                   <img
                     class="float-left"
                     style="margin-right: 15px;"

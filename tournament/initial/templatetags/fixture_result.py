@@ -19,6 +19,23 @@ def get_result_class(teamid, fixture):
 
   return result
 
+@register.simple_tag
+def get_result_class_for_club(clubid, fixture):
+  clubid = int(clubid)
+  result = 'info'
+  if (fixture.home_team_club.id == clubid):
+    if (fixture.home_score > fixture.away_score):
+      result = 'success'
+    elif (fixture.home_score < fixture.away_score):
+      result = 'danger'
+  if (fixture.away_team_club.id == clubid):
+    if (fixture.away_score > fixture.home_score):
+      result = 'success'
+    elif (fixture.away_score < fixture.home_score):
+      result = 'danger'
+
+  return result
+
 @register.filter()
 def to_int(value):
     return int(value)

@@ -246,4 +246,16 @@ def scoreboardand(request, pk):
         {'season': season, 'teamList': teamList}
     )
 
+def clubdetail(request, pk, club):
+    # Load the season for the detail page
+    season = Season.objects.get(pk=pk)
+    teams = season.getTeams().all()
+    fixtures = Fixture.objects.filter(season_id = season.id)
+    club_fixtures = fixtures.filter(Q(home_team_club=club) | Q(away_team_club=club))
 
+    # Render list page with the documents and the form
+    return render(
+        request,
+        'clubdetail.html',
+        {'season': season, 'fixtures': club_fixtures, 'teams': teams, 'clubid': club}
+    )
