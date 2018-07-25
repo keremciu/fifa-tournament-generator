@@ -74,6 +74,7 @@ def makefixture(request, pk):
 
     fixtures = []
     team_club_assignment = {}
+    # club_vs_club_assignment = {}
 
     startWeek = 1
     clubList = clubs
