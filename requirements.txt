@@ -1,6 +1,6 @@
 appnope==0.1.0
 decorator==4.1.2
-Django==1.11.5
+Django==1.11.23
 ipdb==0.10.3
 ipython==6.1.0
 ipython-genutils==0.2.0
