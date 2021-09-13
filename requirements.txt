@@ -11,7 +11,7 @@ pickleshare==0.7.4
 Pillow==8.3.2
 prompt-toolkit==1.0.15
 ptyprocess==0.5.2
-Pygments==2.2.0
+Pygments==2.7.4
 pytz==2017.2
 simplegeneric==0.8.1
 six==1.10.0
